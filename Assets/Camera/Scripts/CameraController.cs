@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class CameraController : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         cameraField = 60;
+        if (!GetComponentInParent<PhotonView>().IsMine)
+            GetComponent<Camera>().enabled = false;
     }
 
     // Update is called once per frame

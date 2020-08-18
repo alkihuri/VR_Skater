@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class BoardEngine : MonoBehaviour
 {
@@ -8,7 +9,8 @@ public class BoardEngine : MonoBehaviour
     [Range(1, 700)] public float enginePower;
     public Animator animator;
     public Transform moveDirection;
-    float startMass; 
+    float startMass;
+    public PhotonView pv;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,38 +28,43 @@ public class BoardEngine : MonoBehaviour
         horizontal = GetComponent<InputManager>().horizontal;
         animator.SetFloat("Turn", horizontal);
 
-        if (GameStates.energyValue  <  0.1)
+        if (pv.IsMine)
         {
-            Debug.Log("Looser");
-            GameObject.FindObjectOfType<SceneController>().DealyLoadScene("Finish");
-        }
 
-        float upBust = 0;
-        transform.parent.transform.parent.transform.Rotate(0, horizontal * 2, 0);
-
-        if(Physics.Raycast(transform.position, -transform.up, out groud))
-        {
-            if(groud.distance<1)
+            if (GameStates.energyValue < 0.1)
             {
-                upBust = 1.5f;
+                Debug.Log("Looser");
+                GameObject.FindObjectOfType<SceneController>().DealyLoadScene("Finish");
             }
+
+            float upBust = 0;
+            transform.parent.transform.parent.transform.Rotate(0, horizontal * 2, 0);
+
+            if (Physics.Raycast(transform.position, -transform.up, out groud))
+            {
+                if (groud.distance < 1)
+                {
+                    upBust = 1.5f;
+                }
+            }
+
+            GameStates.energyValue -= Mathf.Abs(GetComponent<InputManager>().vertical / 4);
+
+            GameObject.FindObjectOfType<ProgressBarCircle>().BarValue = GameStates.energyValue;
+
+            if (GameStates.energyValue > 0)
+                engine.AddForce(moveDirection.forward * enginePower * vertical * 2 + transform.up * enginePower * upBust, ForceMode.Impulse);
+
+            engine.mass = startMass + Mathf.Pow(transform.position.y * 2, 6);
+            if (vertical > 0)
+            {
+                GameStates.rushTime += vertical;
+            }
+
         }
 
-        GameStates.energyValue -= Mathf.Abs(GetComponent<InputManager>().vertical / 4);
-
-        GameObject.FindObjectOfType<ProgressBarCircle>().BarValue = GameStates.energyValue;
-
-        if(GameStates.energyValue>0)
-            engine.AddForce(moveDirection.forward *  enginePower * vertical * 2   + transform.up * enginePower * upBust,ForceMode.Impulse);
-
-        engine.mass = startMass + Mathf.Pow(transform.position.y * 2, 6);
-        if(vertical>0)
-        {
-            GameStates.rushTime += vertical;
-        }
 
 
-       
 
     }
 }

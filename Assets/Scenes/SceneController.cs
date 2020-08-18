@@ -1,14 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
-  
+
+
+     public void ConnectToGame()
+    {
+        GameObject.FindObjectOfType<SkateManager>().ConnectToGame();
+    }
     public void LoadScene(string name)
     {
         SceneManager.LoadScene(name);
+        
+    }
+
+    private void Awake()
+    {
+        
     }
 
     public void ApplicationExit()

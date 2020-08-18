@@ -2,15 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
-public class SpawnerController : MonoBehaviour
+using Photon.Pun;
+public class SpawnerController : MonoBehaviourPunCallbacks
 {
     public GameObject energy;
     List <EnergyController> countOf;
 
+
+    public override void OnJoinedRoom()
+    {
+      
+    }
     private void Start()
     {
         GameStates.RefreshData();
+        if(PhotonNetwork.IsConnected)
+            PhotonNetwork.Instantiate("Player", transform.GetChild(0).position, Quaternion.identity);
     }
     // Update is called once per frame
     void Update()
@@ -22,7 +29,7 @@ public class SpawnerController : MonoBehaviour
         if(countOf.Count<10)
         {
             Transform random = transform.GetChild(Random.Range(0, transform.childCount));
-            Instantiate(energy, random.position, random.rotation, random);
+            PhotonNetwork.Instantiate("Energy", random.position, random.rotation);
         }
 
     }
