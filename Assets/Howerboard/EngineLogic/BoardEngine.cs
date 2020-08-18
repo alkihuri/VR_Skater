@@ -33,11 +33,9 @@ public class BoardEngine : MonoBehaviour
 
             if (GameStates.energyValue < 0.1)
             {
-                Debug.Log("Looser");
-                Photon.Pun.PhotonNetwork.LeaveRoom(); 
-                Photon.Pun.PhotonNetwork.Disconnect();
-                Photon.Pun.PhotonNetwork.LoadLevel("Finish");
-                //GameObject.FindObjectOfType<SceneController>().DealyLoadScene("Finish");
+                 
+               
+                 GameObject.FindObjectOfType<SceneController>().DelayLeftRoom("Finish");
             }
 
             float upBust = 0;

@@ -26,8 +26,9 @@ public   class SkateManager  :  MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-       // PhotonNetwork.Disconnect();
+        PhotonNetwork.LoadLevel("Prewarm");
     }
+
 
     public override void OnJoinedLobby()
     {
@@ -40,11 +41,8 @@ public   class SkateManager  :  MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
     }
     public void JoinRoom()
-    { 
-
-
-
-        if(PhotonNetwork.CountOfRooms<1)
+    {  
+        if(PhotonNetwork.CountOfRooms<1)    /// будет использоваться только одна команата поэтому проверяем если комната  уже создана ззначит просто заходим в нее как львы еже 
             PhotonNetwork.CreateRoom(roomName);
         else
             PhotonNetwork.JoinRoom(roomName);

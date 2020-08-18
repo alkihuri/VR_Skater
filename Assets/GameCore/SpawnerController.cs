@@ -17,7 +17,7 @@ public class SpawnerController : MonoBehaviourPunCallbacks
     {
         GameStates.RefreshData();
         if(PhotonNetwork.IsConnected)
-            PhotonNetwork.Instantiate("Player", transform.GetChild(0).position, Quaternion.identity);
+            PhotonNetwork.Instantiate("Player", transform.GetChild(0).position, transform.GetChild(0).rotation);
     }
     // Update is called once per frame
     void Update()

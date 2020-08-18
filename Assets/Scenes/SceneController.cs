@@ -34,7 +34,20 @@ public class SceneController : MonoBehaviour
     {
         
     }
+    public void DelayLeftRoom(string name)
+    {
+        StartCoroutine(DalayLeft(name));   
+    }
+   
 
+    IEnumerator DalayLeft(string name, int sec = 3)
+    {
+        yield return new WaitForSeconds(sec);
+        Photon.Pun.PhotonNetwork.LeaveRoom();
+        Photon.Pun.PhotonNetwork.LoadLevel(name);
+
+
+    }
     public void DealyLoadScene(string name)
     {
         StartCoroutine(Dealay(name));
