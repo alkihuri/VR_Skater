@@ -9,20 +9,42 @@ public   class SkateManager  :  MonoBehaviourPunCallbacks
     public   string roomName = "RoomOne";
     public void ConnectToGame()
     {
-        
-        if(!PhotonNetwork.IsConnected)
-        {
-            PhotonNetwork.AutomaticallySyncScene = false;
+        PhotonNetwork.AutomaticallySyncScene = false;
+
+        if (!PhotonNetwork.IsConnected)
+        { 
             PhotonNetwork.GameVersion = "1";
             PhotonNetwork.ConnectUsingSettings();
+        }
+        else
+        {
+            Debug.Log("Ошибочка");
         }
          
      
     }
 
+    public override void OnLeftRoom()
+    {
+       // PhotonNetwork.Disconnect();
+    }
+
+    public override void OnJoinedLobby()
+    {
+        Debug.Log("лоббиялде щвана");
+        JoinRoom();
+    }
+
+    public void JoinLobby()
+    {
+        PhotonNetwork.JoinLobby();
+    }
     public void JoinRoom()
     { 
-     if(PhotonNetwork.CountOfRooms<1)
+
+
+
+        if(PhotonNetwork.CountOfRooms<1)
             PhotonNetwork.CreateRoom(roomName);
         else
             PhotonNetwork.JoinRoom(roomName);

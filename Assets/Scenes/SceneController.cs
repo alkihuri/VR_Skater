@@ -6,7 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
-
+    public void Disconent()
+    {
+        Photon.Pun.PhotonNetwork.Disconnect();
+    }
 
      public void ConnectToGame()
     {
@@ -14,8 +17,7 @@ public class SceneController : MonoBehaviour
     }
     public void LoadScene(string name)
     {
-        SceneManager.LoadScene(name);
-        
+        SceneManager.LoadScene(name); 
     }
 
     private void Awake()

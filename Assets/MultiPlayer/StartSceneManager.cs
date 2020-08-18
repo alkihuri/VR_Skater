@@ -3,23 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class StartSceneManager : MonoBehaviour
+public class StartSceneManager : MonoBehaviourPunCallbacks
 {
-    
-    // Start is called before the first frame update
-    void Start()
+    public bool isConected;
+    /*
+    public override void OnLeftRoom()
     {
-        GetComponent<SkateManager>().ConnectToGame();
+        PhotonNetwork.LeaveLobby();
     }
+    */
+    private void Start()
+    {
 
+        PhotonNetwork.AutomaticallySyncScene = false;
+
+
+        if (PhotonNetwork.IsConnected)
+        {
+
+             PhotonNetwork.Disconnect(); 
+
+        }
+     
+    }
     private void Update()
     {
-        if(PhotonNetwork.IsConnected)
-        {
-            Debug.Log("Connected");
-        }
-
+        isConected = PhotonNetwork.IsConnected;
+        if (!PhotonNetwork.IsConnected)
+            GetComponent<SkateManager>().ConnectToGame();
     }
-
-
 }
